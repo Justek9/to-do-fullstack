@@ -7,7 +7,10 @@ const server = app.listen('8000', () => {
 
 const io = socket(server)
 
-const tasks = []
+const tasks = [
+	// { id: 1, name: 'shopping' },
+	// { id: 2, name: 'Go out' },
+]
 
 app.use((req, res) => {
 	res.status(404).send('Not Found...')

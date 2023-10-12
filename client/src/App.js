@@ -3,10 +3,12 @@ import io from 'socket.io-client'
 
 const App = () => {
 	const [socket, setSocket] = useState()
-	let tasks = [
+	const [tasks, setTasks] = useState([
 		{ id: 1, name: 'shopping' },
 		{ id: 2, name: 'Go out' },
-	]
+	])
+
+	const [taskName, setTaskName] = useState('')
 
 	useEffect(() => {
 		const socket = io('ws://localhost:8000', { transports: ['websocket'] })
@@ -17,6 +19,19 @@ const App = () => {
 		}
 	}, [])
 
+	const removeTask = id => {
+		setTasks(tasks => tasks.filter(task => task.id !== id))
+	}
+	const addTask = task => {
+		setTasks(tasks => [...tasks, task])
+	}
+	const submitForm = e => {
+		e.preventDefault()
+		let id = tasks.length + 1
+		addTask({ name: taskName, id: id })
+		setTaskName('')
+	}
+
 	return (
 		<div className='App'>
 			<header>
@@ -24,15 +39,20 @@ const App = () => {
 				<section className='tasks-section' id='task-section'>
 					<h2>Tasks:</h2>
 					<ul className='tasks' id='tasks'>
-						{tasks.map(task => (
-							<li className='task'>
-								{task.name} <button className='btn btn-remove'>Remove</button>
+						{tasks.map((task, i) => (
+							<li className='task' key={i}>
+								{task.name}
+								<button className='btn btn-remove' onClick={() => removeTask(task.id)}>
+									Remove
+								</button>
 							</li>
 						))}
 					</ul>
 
-					<form id='add-task'>
+					<form id='add-task' onSubmit={e => submitForm(e)}>
 						<input
+							value={taskName}
+							onChange={e => setTaskName(e.target.value)}
 							className='text-input'
 							autoComplete='off'
 							type='text'
