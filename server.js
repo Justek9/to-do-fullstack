@@ -21,10 +21,11 @@ io.on('connection', socket => {
 	socket.on('addTask', task => {
 		tasks = [...tasks, task]
 		socket.broadcast.emit('addTask', task)
-		console.log(tasks);
+		console.log(tasks)
 	})
 	socket.on('removeTask', id => {
 		tasks = tasks.filter(task => task.id !== id)
-		socket.broadcast.emit('removeTask', tasks)
+		socket.broadcast.emit('removeTask', id, false)
+		console.log(tasks)
 	})
 })

@@ -7,13 +7,15 @@ const App = () => {
 
 	const [taskName, setTaskName] = useState('')
 
-	const removeTask = id => {
+	const removeTask = (id, isEmitedByUser) => {
 		setTasks(tasks => tasks.filter(task => task.id !== id))
+
+		if (isEmitedByUser) {
+			socket.emit('removeTask', id)
+		}
 	}
 	const addTask = task => {
-		console.log(task)
 		setTasks(tasks => [...tasks, task])
-		console.log(tasks)
 	}
 
 	const updateTasks = data => {
@@ -52,7 +54,7 @@ const App = () => {
 						{tasks.map((task, i) => (
 							<li className='task' key={i}>
 								{task.name}
-								<button className='btn btn-remove' onClick={() => removeTask(task.id)}>
+								<button className='btn btn-remove' onClick={() => removeTask(task.id, true)}>
 									Remove
 								</button>
 							</li>
