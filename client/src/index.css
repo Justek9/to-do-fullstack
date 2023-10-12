@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+body {
+	background: #282c34;
+	color: #fff;
+	font-family: 'Open Sans', sans-serif;
+	padding: 30px;
+	text-align: center;
+}
+
+.btn {
+	background-color: #41a57c;
+	border-radius: 15px;
+	border: none;
+	width: 100px;
+	height: 30px;
+	font-family: inherit;
+	color: #fff;
+	transition: 0.2s;
+	cursor: pointer;
+	outline: none;
+	text-transform: uppercase;
+}
+.btn-add:hover {
+	background-color: #5adba5;
+}
+
+.btn-remove {
+	background-color: #a55041;
+}
+
+.btn-remove:hover {
+	background-color: #d46956;
+}
+.text-input {
+	background: none;
+	border: none;
+	color: #fff;
+	border-bottom: 2px solid #0064e7;
+	padding: 8px 25px 8px 5px;
+	font-family: inherit;
+	outline: none;
+	opacity: 0.6;
+	transition: 0.3s;
+}
+
+.text-input:focus {
+	opacity: 1;
+}
+
+.tasks-section {
+	margin-bottom: 100px;
+}
+
+.tasks {
+	max-width: 400px;
+	list-style-type: none;
+	padding: 0;
+	margin: 20px auto 40px auto;
+}
+
+.task {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px dashed rgb(83, 83, 83);
+	margin: 20px auto 40px auto;
+}
