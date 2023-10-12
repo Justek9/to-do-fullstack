@@ -15,17 +15,14 @@ app.use((req, res) => {
 })
 
 io.on('connection', socket => {
-	console.log(socket.id)
 	io.to(socket.id).emit('updateData', tasks)
 
 	socket.on('addTask', task => {
 		tasks = [...tasks, task]
 		socket.broadcast.emit('addTask', task)
-		console.log(tasks)
 	})
 	socket.on('removeTask', id => {
 		tasks = tasks.filter(task => task.id !== id)
 		socket.broadcast.emit('removeTask', id, false)
-		console.log(tasks)
 	})
 })

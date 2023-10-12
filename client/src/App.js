@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import io from 'socket.io-client'
 
 const App = () => {
-	const [socket, setSocket] = useState()
+	const [socket, setSocket] = useState(null)
 	const [tasks, setTasks] = useState([])
 
 	const [taskName, setTaskName] = useState('')
 
-	const removeTask = (id, isEmitedByUser) => {
+	const removeTask = (id, isEmitedByUser = false) => {
 		setTasks(tasks => tasks.filter(task => task.id !== id))
 
 		if (isEmitedByUser) {
@@ -34,13 +34,13 @@ const App = () => {
 	useEffect(() => {
 		const socket = io('ws://localhost:8000', { transports: ['websocket'] })
 		setSocket(socket)
-		socket.on('addTasK', task => {
-			addTask(task)
-		})
 		socket.on('updateData', tasks => updateTasks(tasks))
+		socket.on('addTask', task => addTask(task))
+		socket.on('removeTask', id => removeTask(id))
 
 		return () => {
 			socket.disconnect()
+			console.log('CLEANING')
 		}
 	}, [])
 
