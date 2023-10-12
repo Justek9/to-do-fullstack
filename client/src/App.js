@@ -3,34 +3,44 @@ import io from 'socket.io-client'
 
 const App = () => {
 	const [socket, setSocket] = useState()
-	const [tasks, setTasks] = useState([
-		{ id: 1, name: 'shopping' },
-		{ id: 2, name: 'Go out' },
-	])
+	const [tasks, setTasks] = useState([])
 
 	const [taskName, setTaskName] = useState('')
-
-	useEffect(() => {
-		const socket = io('ws://localhost:8000', { transports: ['websocket'] })
-		setSocket(socket)
-
-		return () => {
-			socket.disconnect()
-		}
-	}, [])
 
 	const removeTask = id => {
 		setTasks(tasks => tasks.filter(task => task.id !== id))
 	}
 	const addTask = task => {
+		console.log(task)
 		setTasks(tasks => [...tasks, task])
+		console.log(tasks)
 	}
+
+	const updateTasks = data => {
+		setTasks(tasks => [...tasks, ...data])
+	}
+
 	const submitForm = e => {
 		e.preventDefault()
 		let id = tasks.length + 1
-		addTask({ name: taskName, id: id })
+		const task = { name: taskName, id: id }
+		addTask(task)
+		socket.emit('addTask', { name: taskName, id: id })
 		setTaskName('')
 	}
+
+	useEffect(() => {
+		const socket = io('ws://localhost:8000', { transports: ['websocket'] })
+		setSocket(socket)
+		socket.on('addTasK', task => {
+			addTask(task)
+		})
+		socket.on('updateData', tasks => updateTasks(tasks))
+
+		return () => {
+			socket.disconnect()
+		}
+	}, [])
 
 	return (
 		<div className='App'>
